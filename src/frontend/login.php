@@ -17,11 +17,11 @@ session_start();
 
     <form action="login.php" method="post">
         <div class="mb-4">
-            <label for="username" class="block text-gray-700">Username/Email:</label>
+            <label for="username" class="block text-gray-700">Username/Email</label>
             <input type="text" id="username" name="username" class="border rounded px-3 py-2 w-full focus:outline-none focus:border-blue-500">
         </div>
         <div class="mb-4">
-            <label for="password" class="block text-gray-700">Password:</label>
+            <label for="password" class="block text-gray-700">Password</label>
             <input type="password" id="password" name="password" class="border rounded px-3 py-2 w-full focus:outline-none focus:border-blue-500">
         </div>
         <button type="submit" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:ring focus:ring-blue-300">Login</button>

@@ -4,43 +4,110 @@ session_start();
 
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Register</title>
     <!-- Include Tailwind CSS -->
     <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet">
     <style>
         /* Add custom CSS styles here if needed */
         .form-container {
-            max-width: 400px;
+            width: 500px;
             margin: 0 auto;
         }
     </style>
 </head>
+
 <body class="bg-gray-100">
 
-<div class="container mx-auto py-8">
-    <h1 class="text-2xl text-center font-semibold mb-8">Registration</h1>
+    <div class="container mx-auto py-8">
+        <h1 class="text-2xl text-center font-semibold mb-8">Registration</h1>
 
-    <div class="form-container bg-white p-8 rounded shadow-md">
-        <form action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" method="post">
-            <div class="mb-4">
-                <label for="username" class="block text-gray-700">Username:</label>
-                <input type="text" id="username" name="username" class="border rounded px-3 py-2 w-full focus:outline-none focus:border-blue-500">
-            </div>
-            <div class="mb-4">
-                <label for="email" class="block text-gray-700">Email:</label>
-                <input type="email" id="email" name="email" class="border rounded px-3 py-2 w-full focus:outline-none focus:border-blue-500">
-            </div>
-            <div class="mb-4">
-                <label for="password" class="block text-gray-700">Password:</label>
-                <input type="password" id="password" name="password" class="border rounded px-3 py-2 w-full focus:outline-none focus:border-blue-500">
-            </div>
-            <button type="submit" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded w-full">Register</button>
-        </form>
+        <div class="form-container bg-white p-8 rounded-lg shadow-md">
+            <!-- Display error message if any -->
+            <?php if (isset($error_message)) : ?>
+                <div class="text-red-500 mb-4"><?php echo $error_message; ?></div>
+            <?php endif; ?>
+
+            <!-- Registration form -->
+            <form action="../backend/user_register.php" method="POST" id="registrationForm">
+
+                <!-- Role selection section -->
+                <div class="mt-4">
+                    <label for="role" class="block text-sm font-medium text-gray-700">Role</label>
+                    <select id="role" name="role_id" class="border rounded-md px-3 py-2 w-full focus:outline-none focus:border-blue-500">
+                        <option value="1">Seller</option>
+                        <option value="2">Customer</option>
+                    </select>
+                </div>
+                <!-- Name section -->
+                <div class="grid grid-cols-1 gap-4 mt-4">
+                    <div>
+                        <label for="first-name" class="block text-sm font-medium text-gray-700">First Name</label>
+                        <input type="text" id="first-name" name="first_name" class="border rounded-md px-3 py-2 w-full focus:outline-none focus:border-blue-500">
+                    </div>
+                    <div>
+                        <label for="middle-name" class="block text-sm font-medium text-gray-700">Middle Name</label>
+                        <input type="text" id="middle-name" name="middle_name" class="border rounded-md px-3 py-2 w-full focus:outline-none focus:border-blue-500">
+                    </div>
+                    <div>
+                        <label for="last-name" class="block text-sm font-medium text-gray-700">Last Name</label>
+                        <input type="text" id="last-name" name="last_name" class="border rounded-md px-3 py-2 w-full focus:outline-none focus:border-blue-500">
+                    </div>
+                </div>
+                <!-- Email section -->
+                <div class="mt-4">
+                    <label for="email" class="block text-sm font-medium text-gray-700">Email Address</label>
+                    <input type="email" id="email" name="email" class="border rounded-md px-3 py-2 w-full focus:outline-none focus:border-blue-500">
+                </div>
+                <!-- Username section -->
+                <div class="mt-4">
+                    <label for="username" class="block text-sm font-medium text-gray-700">Username</label>
+                    <input type="text" id="username" name="username" class="border rounded-md px-3 py-2 w-full focus:outline-none focus:border-blue-500">
+                </div>
+                <!-- Password section -->
+                <div class="mt-4">
+                    <label for="password" class="block text-sm font-medium text-gray-700">Password</label>
+                    <div class="relative">
+                        <input type="password" id="password" name="password" class="border rounded-md px-3 py-2 w-full focus:outline-none focus:border-blue-500">
+                        <button type="button" onclick="togglePasswordVisibility()" class="absolute inset-y-0 right-0 flex items-center px-3 focus:outline-none">
+                            <i id="eyeIcon" class="fas fa-eye text-gray-400 hover:text-gray-600"></i>
+                        </button>
+                    </div>
+                </div>
+                <!-- Phone number section -->
+                <div class="mt-4">
+                    <label for="phone-number" class="block text-sm font-medium text-gray-700">Phone Number</label>
+                    <input type="text" id="phone-number" name="phone_number" class="border rounded-md px-3 py-2 w-full focus:outline-none focus:border-blue-500">
+                </div>
+                <!-- Register button -->
+                <div class="mt-8">
+                    <button type="submit" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">Register</button>
+                </div>
+            </form>
+        </div>
     </div>
-</div>
+
+    <script>
+        function togglePasswordVisibility() {
+            const passwordInput = document.getElementById('password');
+            const eyeIcon = document.getElementById('eyeIcon');
+
+            if (passwordInput.type === 'password') {
+                passwordInput.type = 'text';
+                eyeIcon.classList.remove('fa-eye');
+                eyeIcon.classList.add('fa-eye-slash');
+            } else {
+                passwordInput.type = 'password';
+                eyeIcon.classList.remove('fa-eye-slash');
+                eyeIcon.classList.add('fa-eye');
+            }
+        }
+    </script>
 
 </body>
+
 </html>
