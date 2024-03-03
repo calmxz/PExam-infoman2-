@@ -27,13 +27,14 @@ CREATE TABLE IF NOT EXISTS users_address(
 	barangay VARCHAR(100),
 	municipality VARCHAR(100),
 	zip_code INT,
-	province VARCHAR(100)
+	province VARCHAR(100),
 	FOREIGN KEY(user_id) REFERENCES users(user_id) ON UPDATE CASCADE ON DELETE RESTRICT
 );
 
 CREATE TABLE IF NOT EXISTS shops(
 	shop_id SERIAL PRIMARY KEY,
 	shop_name VARCHAR(255),
+	shop_location VARCHAR(255),
 	user_id INT,
 	FOREIGN KEY(user_id) REFERENCES users(user_id) ON UPDATE CASCADE ON DELETE RESTRICT
 );
@@ -42,14 +43,15 @@ CREATE TABLE IF NOT EXISTS products(
 	product_id SERIAL PRIMARY KEY,
 	product_name VARCHAR(100),
 	description VARCHAR(255),
-	unit_price DECIMAL(10, 2)
+	unit_price DECIMAL(10, 2),
+	stock INT
 );
 
 CREATE TABLE IF NOT EXISTS product_images(
 	pi_id SERIAL PRIMARY KEY,
-	image_link VARCHAR(255),
 	product_id INT,
-	FOREIGN KEY(product_id) REFERENCES products(product_id) ON UPDATE CASCADE, ON DELETE RESTRICT
+	image_link VARCHAR(255),
+	FOREIGN KEY(product_id) REFERENCES products(product_id) ON UPDATE CASCADE ON DELETE RESTRICT
 );
 
 CREATE TABLE IF NOT EXISTS shop_products(
@@ -61,11 +63,21 @@ CREATE TABLE IF NOT EXISTS shop_products(
 );
 
 CREATE TABLE IF NOT EXISTS orders(
-	order_id SERIAL PRIMARY KEY
+	order_id SERIAL PRIMARY KEY,
+	date TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+	total DECIMAL(10, 2)
 );
 
 CREATE TABLE IF NOT EXISTS order_details(
-	od_id SERIAL PRIMARY KEY
+	od_id SERIAL PRIMARY KEY,
+	order_id INT,
+	product_id INT,
+	shop_id INT,
+	quantity INT,
+	order_detail_total DECIMAL(10, 2),
+	FOREIGN KEY(order_id) REFERENCES orders(order_id) ON UPDATE CASCADE ON DELETE RESTRICT,
+	FOREIGN KEY(product_id) REFERENCES products(product_id) ON UPDATE CASCADE ON DELETE RESTRICT,
+	FOREIGN KEY(shop_id) REFERENCES shops(shop_id) ON UPDATE CASCADE ON DELETE RESTRICT
 );
 
 INSERT INTO user_roles(role_name) VALUES ('Seller'), ('Customer')

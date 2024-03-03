@@ -39,24 +39,9 @@ session_start();
                 <div class="mt-4">
                     <label for="role" class="block text-sm font-medium text-gray-700">Role</label>
                     <select id="role" name="role_id" class="border rounded-md px-3 py-2 w-full focus:outline-none focus:border-blue-500">
-                        <option value="1">Seller</option>
                         <option value="2">Customer</option>
+                        <option value="1">Seller</option>
                     </select>
-                </div>
-                <!-- Name section -->
-                <div class="grid grid-cols-1 gap-4 mt-4">
-                    <div>
-                        <label for="first-name" class="block text-sm font-medium text-gray-700">First Name</label>
-                        <input type="text" id="first-name" name="first_name" class="border rounded-md px-3 py-2 w-full focus:outline-none focus:border-blue-500">
-                    </div>
-                    <div>
-                        <label for="middle-name" class="block text-sm font-medium text-gray-700">Middle Name</label>
-                        <input type="text" id="middle-name" name="middle_name" class="border rounded-md px-3 py-2 w-full focus:outline-none focus:border-blue-500">
-                    </div>
-                    <div>
-                        <label for="last-name" class="block text-sm font-medium text-gray-700">Last Name</label>
-                        <input type="text" id="last-name" name="last_name" class="border rounded-md px-3 py-2 w-full focus:outline-none focus:border-blue-500">
-                    </div>
                 </div>
                 <!-- Email section -->
                 <div class="mt-4">
@@ -83,6 +68,17 @@ session_start();
                     <label for="phone-number" class="block text-sm font-medium text-gray-700">Phone Number</label>
                     <input type="text" id="phone-number" name="phone_number" class="border rounded-md px-3 py-2 w-full focus:outline-none focus:border-blue-500">
                 </div>
+                <!-- Shop name section (initially hidden) -->
+                <div id="shopSection" class="mt-4 hidden">
+                    <label for="shop-name" class="block text-sm font-medium text-gray-700">Shop Name</label>
+                    <input type="text" id="shop-name" name="shop_name" class="border rounded-md px-3 py-2 w-full focus:outline-none focus:border-blue-500">
+                </div>
+
+                <!-- Shop location section (initially hidden) -->
+                <div id="locationSection" class="mt-4 hidden">
+                    <label for="shop-location" class="block text-sm font-medium text-gray-700">Shop Location</label>
+                    <input type="text" id="shop-location" name="shop_location" class="border rounded-md px-3 py-2 w-full focus:outline-none focus:border-blue-500">
+                </div>
                 <!-- Register button -->
                 <div class="mt-8">
                     <button type="submit" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">Register</button>
@@ -106,6 +102,25 @@ session_start();
                 eyeIcon.classList.add('fa-eye');
             }
         }
+
+        // Function to show or hide shop name and location sections based on selected role
+    function toggleShopSections() {
+        const roleSelect = document.getElementById('role');
+        const shopSection = document.getElementById('shopSection');
+        const locationSection = document.getElementById('locationSection');
+
+        if (roleSelect.value === '1') { // If role is Seller
+            shopSection.classList.remove('hidden');
+            locationSection.classList.remove('hidden');
+        } else {
+            shopSection.classList.add('hidden');
+            locationSection.classList.add('hidden');
+        }
+    }
+
+    // Call the function initially and whenever role selection changes
+    toggleShopSections();
+    document.getElementById('role').addEventListener('change', toggleShopSections);
     </script>
 
 </body>
