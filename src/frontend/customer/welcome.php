@@ -4,7 +4,7 @@ session_start();
 // Check if user is logged in
 if (!isset($_SESSION['user_id']) && !isset($_SESSION['role_id'])) {
     // Redirect to login page
-    header("Location: ../frontend/login.php");
+    header("Location: ../login.php");
     exit();
 }
 

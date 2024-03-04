@@ -28,7 +28,10 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
                 // If user is a seller, store shop information in session
                 if ($_SESSION['role_id'] == 1 && isset($userData['shop_id'])) {
+                    $_SESSION['username'] = $userData['username'];
                     $_SESSION['shop_id'] = $userData['shop_id'];
+                    $_SESSION['shop_name'] = $userData['shop_name'];
+    
                 }
 
                 // Redirect based on role ID
