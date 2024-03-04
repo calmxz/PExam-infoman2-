@@ -127,3 +127,62 @@ BEGIN
     WHERE sp.shop_id = p_shop_id;
 END;
 $$ LANGUAGE plpgsql;
+
+CREATE OR REPLACE FUNCTION update_product(
+    p_product_id INT,
+    p_product_name VARCHAR,
+    p_description TEXT,
+    p_unit_price NUMERIC,
+    p_stock INT,
+    p_image_link VARCHAR
+)
+RETURNS VOID AS $$
+BEGIN
+    -- Update the product details
+    UPDATE products
+    SET 
+        product_name = p_product_name,
+        description = p_description,
+        unit_price = p_unit_price,
+        stock = p_stock
+    WHERE
+        product_id = p_product_id;
+
+    -- Check if the product already has an image link
+    IF EXISTS (
+        SELECT 1 FROM product_images WHERE product_id = p_product_id
+    ) THEN
+        -- Update the existing image link
+        UPDATE product_images
+        SET 
+            image_link = p_image_link
+        WHERE
+            product_id = p_product_id;
+    ELSE
+        -- Insert the image link into the product_images table
+        INSERT INTO product_images (product_id, image_link)
+        VALUES (p_product_id, p_image_link);
+    END IF;
+END;
+$$ LANGUAGE plpgsql;
+
+CREATE OR REPLACE FUNCTION delete_product(
+    p_product_id INT
+)
+RETURNS BOOLEAN AS $$
+BEGIN
+    -- Delete the product from product_images table
+    DELETE FROM product_images WHERE product_id = p_product_id;
+
+    -- Delete the product from shop_products table
+    DELETE FROM shop_products WHERE product_id = p_product_id;
+
+    -- Delete the product from products table
+    DELETE FROM products WHERE product_id = p_product_id;
+    
+    RETURN TRUE; -- Return true indicating successful deletion
+EXCEPTION
+    WHEN OTHERS THEN
+        RETURN FALSE; -- Return false if an error occurs
+END;
+$$ LANGUAGE plpgsql;

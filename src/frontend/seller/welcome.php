@@ -17,6 +17,14 @@ if (!isset($_SESSION['user_id']) || !isset($_SESSION['role_id'])) {
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>E-Commerce App</title>
     <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <script>
+    // JavaScript function to show confirmation alert before deleting the product
+    function confirmDelete(productId) {
+        if (confirm("Are you sure you want to delete this product?")) {
+            window.location.href = "../../backend/delete_product.php?product_id=" + productId;
+        }
+    }
+    </script>
 </head>
 <body class="bg-gray-100 font-sans leading-normal tracking-normal">
 
@@ -46,11 +54,8 @@ if (!isset($_SESSION['user_id']) || !isset($_SESSION['role_id'])) {
                 echo '<h3 class="text-lg font-semibold mb-2">' . $product['product_name'] . '</h3>';
                 echo '<p class="text-gray-700">₱' . number_format($product['unit_price'], 2) . '</p>';
                 echo '<div class="flex justify-between mt-4">';
-                echo '<a href="update_product.php?id=' . $product['product_id'] . '" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline">Update</a>';
-                echo '<form action="../../backend/delete_product.php" method="POST" onsubmit="return confirm(\'Are you sure you want to delete this product?\')">';
-                echo '<input type="hidden" name="product_id" value="' . $product['product_id'] . '">';
-                echo '<button type="submit" class="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline">Delete</button>';
-                echo '</form>';
+                echo '<a href="update_product.php?product_id=' . $product['product_id'] . '" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline">Update</a>';
+                echo '<a href="#" onclick="confirmDelete(' . $product['product_id'] . ');" class="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline">Delete</a>';
                 echo '</div>';
                 echo '</div>';
                 echo '</div>';
